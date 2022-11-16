@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SettingsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/rv_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:text="@string/rgbv_r_label" />
+
+            <SeekBar
+                android:id="@+id/r_value_seek"
+                android:layout_width="246dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:max="255"
+                android:progress="1" />
+
+            <TextView
+                android:id="@+id/r_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/gv_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:text="@string/rgbv_g_label" />
+
+            <SeekBar
+                android:id="@+id/g_value_seek"
+                android:layout_width="246dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:max="255"
+                android:progress="1" />
+
+            <TextView
+                android:id="@+id/g_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="16dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/bv_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:text="@string/rgbv_b_label" />
+
+            <SeekBar
+                android:id="@+id/b_value_seek"
+                android:layout_width="246dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:max="255"
+                android:progress="1" />
+
+            <TextView
+                android:id="@+id/b_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/brightness_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:text="@string/brightnessv_label" />
+
+            <SeekBar
+                android:id="@+id/brightness_value_seek"
+                android:layout_width="246dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top"
+                android:max="100"
+                android:progress="1" />
+
+            <TextView
+                android:id="@+id/brightness_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/settings_widget_margin_start"
+                android:layout_marginTop="@dimen/settings_widget_margin_top" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</FrameLayout>
