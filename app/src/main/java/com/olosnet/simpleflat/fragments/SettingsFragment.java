@@ -7,7 +7,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.olosnet.simpleflat.R;
-import com.olosnet.simpleflat.SimpleFlatBus;
+import com.olosnet.simpleflat.buses.SimpleFlatBus;
 
 public class SettingsFragment extends Fragment {
 

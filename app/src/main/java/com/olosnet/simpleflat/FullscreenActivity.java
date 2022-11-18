@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.olosnet.simpleflat.buses.SimpleFlatBus;
 import com.olosnet.simpleflat.databinding.ActivityFullscreenBinding;
 
 /**

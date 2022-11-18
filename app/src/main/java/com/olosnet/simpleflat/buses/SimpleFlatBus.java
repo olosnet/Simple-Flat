@@ -1,4 +1,4 @@
-package com.olosnet.simpleflat;
+package com.olosnet.simpleflat.buses;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
