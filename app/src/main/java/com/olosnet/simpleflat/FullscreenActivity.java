@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.AsyncTaskLoader;
 
 import com.olosnet.simpleflat.buses.SimpleFlatBus;
 import com.olosnet.simpleflat.database.ConfigsDao;
@@ -151,8 +150,6 @@ public class FullscreenActivity extends AppCompatActivity {
         SimpleFlatBus.gSubject().subscribe(value -> { setG(value); });
         SimpleFlatBus.bSubject().subscribe(value -> { setB(value); });
         SimpleFlatBus.brightnessSubject().subscribe(value -> { setBrightness(value); });
-
-
 
         if (savedInstanceState != null) {
             int R = savedInstanceState.getInt("currentR", MAX_COLOR);
@@ -309,9 +306,9 @@ public class FullscreenActivity extends AppCompatActivity {
             protected Void doInBackground(Void... voids) {
                 ConfigsDao dao = database.configsDao();
 
-                Integer R = MAX_COLOR;
-                Integer G = MAX_COLOR;
-                Integer B = MAX_COLOR;
+                Integer RC = MAX_COLOR;
+                Integer GC = MAX_COLOR;
+                Integer BC = MAX_COLOR;
                 Float brightness = DEFAULT_BRIGHTNESS;
 
                 ConfigsModel cr = dao.getByKey(currentRKey);
@@ -319,14 +316,14 @@ public class FullscreenActivity extends AppCompatActivity {
                 ConfigsModel cb = dao.getByKey(currentBKey);
                 ConfigsModel cbrightness = dao.getByKey(currentBrightnessKey);
 
-                if(cr !=null) { R = Integer.parseInt(cr.getValue()); }
-                if(cg !=null) { G = Integer.parseInt(cg.getValue()); }
-                if(cb !=null) { B = Integer.parseInt(cb.getValue()); }
+                if(cr !=null) { RC = Integer.parseInt(cr.getValue()); }
+                if(cg !=null) { GC = Integer.parseInt(cg.getValue()); }
+                if(cb !=null) { BC = Integer.parseInt(cb.getValue()); }
                 if(cbrightness !=null) { brightness = Float.parseFloat(cbrightness.getValue()); }
 
-                SimpleFlatBus.rSubject().onNext(R);
-                SimpleFlatBus.gSubject().onNext(G);
-                SimpleFlatBus.bSubject().onNext(B);
+                SimpleFlatBus.rSubject().onNext(RC);
+                SimpleFlatBus.gSubject().onNext(GC);
+                SimpleFlatBus.bSubject().onNext(BC);
                 SimpleFlatBus.brightnessSubject().onNext(brightness);
                 SimpleFlatBus.updateSeekSubject().onNext(true);
 

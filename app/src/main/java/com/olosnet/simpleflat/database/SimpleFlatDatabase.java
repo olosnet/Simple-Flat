@@ -13,7 +13,6 @@ public abstract class SimpleFlatDatabase extends RoomDatabase {
 
     private static SimpleFlatDatabase database;
 
-
     public abstract ConfigsDao configsDao();
     public abstract ProfilesDao profilesDao();
 

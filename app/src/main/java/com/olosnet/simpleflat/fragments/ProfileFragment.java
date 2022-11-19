@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
 import com.olosnet.simpleflat.R;
+import com.olosnet.simpleflat.dialogs.ConfirmProfileDeletionDialog;
+import com.olosnet.simpleflat.dialogs.CreateProfileDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +46,27 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        Button delete_button = view.findViewById(R.id.deleteButton);
+        delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ConfirmProfileDeletionDialog delete_dialog = new ConfirmProfileDeletionDialog();
+
+                delete_dialog.show(getActivity().getSupportFragmentManager(), "viewHolder");
+            }
+        });
+
+        Button new_button = view.findViewById(R.id.newButton);
+        new_button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                CreateProfileDialog create_dialog = new CreateProfileDialog();
+                create_dialog.show(getActivity().getSupportFragmentManager(), "viewHolder");
+            }
+        });
+        return view;
     }
 }
