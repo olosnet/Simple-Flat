@@ -50,7 +50,7 @@ public class SettingsFragment extends Fragment {
         r_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                ConfigsBus.writeRedSubject().onNext(progress);
+                ConfigsBus.writeRedRequest().onNext(progress);
             }
 
             @Override
@@ -63,7 +63,7 @@ public class SettingsFragment extends Fragment {
         g_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                ConfigsBus.writeGreenSubject().onNext(progress);
+                ConfigsBus.writeGreenRequest().onNext(progress);
             }
 
             @Override
@@ -76,7 +76,7 @@ public class SettingsFragment extends Fragment {
         b_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                ConfigsBus.writeBlueSubject().onNext(progress);
+                ConfigsBus.writeBlueRequest().onNext(progress);
             }
 
             @Override
@@ -90,7 +90,7 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                ConfigsBus.writeBrightnessSubject().onNext((float)progress/100);
+                ConfigsBus.writeBrightnessRequest().onNext((float)progress/100);
             }
 
             @Override
@@ -100,21 +100,21 @@ public class SettingsFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        subs.add(ConfigsBus.rSubject().subscribe(value -> r_value.setText(value.toString())));
-        subs.add(ConfigsBus.gSubject().subscribe(value -> g_value.setText(value.toString())));
-        subs.add(ConfigsBus.bSubject().subscribe(value -> b_value.setText(value.toString())));
-        subs.add(ConfigsBus.brightnessSubject().subscribe(value -> brightness_value.setText(value.toString())));
+        subs.add(ConfigsBus.onRedUpdated().subscribe(value -> r_value.setText(value.toString())));
+        subs.add(ConfigsBus.onGreenUpdated().subscribe(value -> g_value.setText(value.toString())));
+        subs.add(ConfigsBus.onBlueUpdated().subscribe(value -> b_value.setText(value.toString())));
+        subs.add(ConfigsBus.onBrightnessUpdated().subscribe(value -> brightness_value.setText(value.toString())));
         setSeeksProgress(); //First time set
-        subs.add(ConfigsBus.readAllSubject().subscribe(value -> setSeeksProgress()));
+        subs.add(ConfigsBus.onReadAll().subscribe(value -> setSeeksProgress()));
 
         return view;
     }
 
     void setSeeksProgress() {
-        int current_r = ConfigsBus.rSubject().getValue();
-        int current_g = ConfigsBus.gSubject().getValue();
-        int current_b = ConfigsBus.bSubject().getValue();
-        int current_brightness = (int)(ConfigsBus.brightnessSubject().getValue()*100);
+        int current_r = ConfigsBus.onRedUpdated().getValue();
+        int current_g = ConfigsBus.onGreenUpdated().getValue();
+        int current_b = ConfigsBus.onBlueUpdated().getValue();
+        int current_brightness = (int)(ConfigsBus.onBrightnessUpdated().getValue()*100);
 
         r_seek.setProgress(current_r);
         g_seek.setProgress(current_g);

@@ -12,20 +12,20 @@ import java.util.List;
 public interface ConfigsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public Long createConfigEntry(ConfigsModel entry);
+    Long createConfigEntry(ConfigsModel entry);
 
     @Update
-    public void updateConfigEntry(ConfigsModel entry);
+    void updateConfigEntry(ConfigsModel entry);
 
     @Delete
-    public void deleteConfigEntry(ConfigsModel entry);
+    void deleteConfigEntry(ConfigsModel entry);
 
     @Query("SELECT * FROM configs WHERE id = :configID")
-    public ConfigsModel getByID(Long configID);
+    ConfigsModel getByID(Long configID);
 
     @Query("SELECT * FROM configs WHERE ckey = :configKey")
-    public ConfigsModel getByKey(String configKey);
+    ConfigsModel getByKey(String configKey);
 
     @Query("SELECT * FROM configs")
-    public List<ConfigsModel> getAll();
+    List<ConfigsModel> getAll();
 }

@@ -9,25 +9,31 @@ import java.util.List;
 
 
 public class ProfilesBus {
+
+    // Create
     private static final PublishSubject<ProfilesModel> createProfileRequestSubject
             =  PublishSubject.create();
+    private static final PublishSubject<ProfilesModel> onCreatedProfileSubject = PublishSubject.create();
+    public static PublishSubject<ProfilesModel> createRequest() { return createProfileRequestSubject;}
+    public static PublishSubject<ProfilesModel> onCreated() {return onCreatedProfileSubject; }
+
+    // Delete
     private static final PublishSubject<Long> deleteProfileRequestSubject
             = PublishSubject.create();
+    private static final PublishSubject<Long> onDeletedProfileSubject = PublishSubject.create();
+    public static PublishSubject<Long> deleteRequest() { return deleteProfileRequestSubject;}
+    public static PublishSubject<Long> onDeleted() { return onDeletedProfileSubject; }
 
-    private static final PublishSubject<Long> onDeleteProfileSubject = PublishSubject.create();
-    private static final PublishSubject<ProfilesModel> onCreateProfileSubject = PublishSubject.create();
+    // Save
+    private static final PublishSubject<ProfilesModel> saveProfileRequestSubject = PublishSubject.create();
+    private static final PublishSubject<ProfilesModel> onProfileSavedSubject = PublishSubject.create();
+    public static PublishSubject<ProfilesModel> saveRequest() { return saveProfileRequestSubject;}
+    public static PublishSubject<ProfilesModel> onSaved() { return onProfileSavedSubject; }
 
-    public static PublishSubject loadProfilesRequestSubject = PublishSubject.create();
-    public static BehaviorSubject<List<ProfilesModel>> onLoadProfilesSubject =
+    // Load
+    public static PublishSubject<Boolean> loadProfilesRequestSubject = PublishSubject.create();
+    public static BehaviorSubject<List<ProfilesModel>> onLoadedSubject =
             BehaviorSubject.createDefault(new ArrayList<>());
-
-
-    public static PublishSubject<ProfilesModel> createRequestSubject() { return createProfileRequestSubject;}
-    public static PublishSubject<ProfilesModel> onCreateSubject() {return onCreateProfileSubject; }
-
-    public static PublishSubject<Long> deleteRequestSubject() { return deleteProfileRequestSubject;}
-    public static PublishSubject<Long> onDeleteSubject() { return onDeleteProfileSubject; }
-
-    public static PublishSubject loadRequestSubject() {return loadProfilesRequestSubject;}
-    public static BehaviorSubject<List<ProfilesModel>> onLoadSubject() {return onLoadProfilesSubject;}
+    public static PublishSubject<Boolean> loadRequest() {return loadProfilesRequestSubject;}
+    public static BehaviorSubject<List<ProfilesModel>> onLoaded() {return onLoadedSubject;}
 }

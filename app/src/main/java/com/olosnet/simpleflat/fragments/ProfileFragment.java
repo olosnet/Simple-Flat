@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.olosnet.simpleflat.R;
 import com.olosnet.simpleflat.adapters.ProfileSpinAdapter;
-import com.olosnet.simpleflat.buses.ProfilesBus;
 import com.olosnet.simpleflat.buses.ConfigsBus;
+import com.olosnet.simpleflat.buses.ProfilesBus;
 import com.olosnet.simpleflat.database.ProfilesModel;
 
 import java.util.ArrayList;
@@ -28,10 +28,10 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ProfileFragment extends Fragment {
 
+    private final List<Disposable> subs = new ArrayList<>();
     private List<ProfilesModel> profiles;
     private ProfilesModel selectedProfile;
-    private final List<Disposable> subs = new ArrayList<>();
-
+    private boolean firstSelection = true;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -42,7 +42,9 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);}
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,10 +58,17 @@ public class ProfileFragment extends Fragment {
         Button delete_button = view.findViewById(R.id.deleteButton);
         delete_button.setOnClickListener(l -> showDeleteProfileDialog());
 
+        Button save_button = view.findViewById(R.id.saveButton);
+        save_button.setOnClickListener(l -> updateAndSaveSelectedProfile() );
+
+        Button load_button = view.findViewById(R.id.loadButton);
+        load_button.setOnClickListener(l -> loadSelectedProfile());
+
+        // Spinner
         profiles = new ArrayList<>();
         ProfileSpinAdapter spinAdapter = new ProfileSpinAdapter(getContext(),
-                                                android.R.layout.simple_spinner_item,
-                                                profiles);
+                android.R.layout.simple_spinner_item,
+                profiles);
         spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner profileSpinner = view.findViewById(R.id.selectProfileSpinner);
         profileSpinner.setAdapter(spinAdapter);
@@ -71,43 +80,69 @@ public class ProfileFragment extends Fragment {
                 selectedProfile = spinAdapter.getItem(position);
             }
             @Override
-            public void onNothingSelected(AdapterView<?> adapter) {  }
+            public void onNothingSelected(AdapterView<?> adapter) {
+            }
         });
 
-        subs.add(ProfilesBus.onLoadSubject().subscribe(value -> {
-           profiles.clear();
-           profiles.addAll(value);
-           spinAdapter.notifyDataSetChanged();
+        // Subscription
+        subs.add(ProfilesBus.onLoaded().subscribe(value -> {
+            profiles.clear();
+            profiles.addAll(value);
+            spinAdapter.notifyDataSetChanged();
+            // WA
+            if (firstSelection) {
+                if (profileSpinner.getCount() > 0) {
+                    profileSpinner.setSelection(0);
+                    selectedProfile = spinAdapter.getItem(0);
+                }
+                firstSelection = false;
+            }
         }));
 
-        subs.add(ProfilesBus.onCreateSubject().subscribe(value -> {
-            ProfilesBus.loadRequestSubject().onNext(1);
+        subs.add(ProfilesBus.onCreated().subscribe(value -> {
+            ProfilesBus.loadRequest().onNext(true);
+            execToast(R.string.profile_created);
         }));
 
-        subs.add(ProfilesBus.onDeleteSubject().subscribe(value -> {
-            ProfilesBus.loadRequestSubject().onNext(1);
+        subs.add(ProfilesBus.onDeleted().subscribe(value ->{
+            ProfilesBus.loadRequest().onNext(true);
+            execToast(R.string.profile_deleted);
+        }));
+
+        subs.add(ProfilesBus.onSaved().subscribe(value -> {
+            execToast(R.string.profile_saved);
         }));
 
         return view;
     }
 
-    private void createNewProfileOnCurrentData(String profileName)
-    {
-        Log.i("PROFILE", "Save profile with name" + profileName);
+    private void updateAndSaveSelectedProfile() {
+        if (selectedProfile != null) {
+            selectedProfile.setR_value(ConfigsBus.onRedUpdated().getValue());
+            selectedProfile.setG_value(ConfigsBus.onGreenUpdated().getValue());
+            selectedProfile.setB_value(ConfigsBus.onBlueUpdated().getValue());
+            selectedProfile.setBrightness_value(ConfigsBus.onBrightnessUpdated().getValue());
+            ProfilesBus.saveRequest().onNext(selectedProfile);
+        }
+    }
 
-        int currentR = ConfigsBus.rSubject().getValue();
-        int currentG = ConfigsBus.gSubject().getValue();
-        int currentB = ConfigsBus.bSubject().getValue();
-        float currentBrightness = ConfigsBus.brightnessSubject().getValue();
+    private void loadSelectedProfile() {
+        if (selectedProfile != null) {
+            ConfigsBus.writeRedRequest().onNext(selectedProfile.getR_value());
+            ConfigsBus.writeGreenRequest().onNext(selectedProfile.getG_value());
+            ConfigsBus.writeBlueRequest().onNext(selectedProfile.getB_value());
+            ConfigsBus.writeBrightnessRequest().onNext(selectedProfile.getBrightness_value());
+        }
+    }
 
+    private void createNewProfileOnCurrentData(String profileName) {
         ProfilesModel profile = new ProfilesModel();
         profile.setName(profileName);
-        profile.setR_value(currentR);
-        profile.setG_value(currentG);
-        profile.setB_value(currentB);
-        profile.setBrightness_value(currentBrightness);
-
-        ProfilesBus.createRequestSubject().onNext(profile);
+        profile.setR_value(ConfigsBus.onRedUpdated().getValue());
+        profile.setG_value(ConfigsBus.onGreenUpdated().getValue());
+        profile.setB_value(ConfigsBus.onBlueUpdated().getValue());
+        profile.setBrightness_value(ConfigsBus.onBrightnessUpdated().getValue());
+        ProfilesBus.createRequest().onNext(profile);
     }
 
     private void showCreateProfileDialog() {
@@ -127,10 +162,8 @@ public class ProfileFragment extends Fragment {
 
 
                     if (profileName.isEmpty()) {
-                        Toast.makeText(getContext(),
-                                R.string.profile_name_required, Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                        execToast(R.string.profile_name_required);
+                    } else {
                         createNewProfileOnCurrentData(profileName);
                     }
                     dialogInterface.dismiss();
@@ -144,12 +177,16 @@ public class ProfileFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(R.string.are_you_sure)
                 .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-                    ProfilesBus.deleteRequestSubject().onNext(selectedProfile.getId());
+                    ProfilesBus.deleteRequest().onNext(selectedProfile.getId());
                     dialogInterface.dismiss();
                 })
                 .setNegativeButton(R.string.no, (dialogInterface, i) -> dialogInterface.cancel());
 
         builder.show();
+    }
+
+    private void execToast(int resID) {
+        Toast.makeText(getContext(), resID, Toast.LENGTH_LONG).show();
     }
 
     @Override

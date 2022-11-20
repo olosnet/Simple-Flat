@@ -48,6 +48,8 @@ public class ProfileSpinAdapter extends ArrayAdapter<ProfilesModel> {
         return label;
     }
 
+
+
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         TextView label = (TextView) super.getView(position, convertView, parent);

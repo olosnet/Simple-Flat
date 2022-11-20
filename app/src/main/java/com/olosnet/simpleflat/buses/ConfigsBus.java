@@ -16,22 +16,22 @@ public final class ConfigsBus {
     private static final BehaviorSubject<Integer> bSubject = BehaviorSubject.createDefault(255);
     private static final BehaviorSubject<Float> brightnessSubject = BehaviorSubject.createDefault(1.0f);
 
-    public static PublishSubject<Integer> writeRedSubject() {return wRRequestSubject;}
-    public static BehaviorSubject<Integer> rSubject() {
+    public static PublishSubject<Integer> writeRedRequest() {return wRRequestSubject;}
+    public static BehaviorSubject<Integer> onRedUpdated() {
         return rSubject;
     }
 
-    public static PublishSubject<Integer> writeGreenSubject() {return wGRequestSubject;}
-    public static BehaviorSubject<Integer> gSubject() {
+    public static PublishSubject<Integer> writeGreenRequest() {return wGRequestSubject;}
+    public static BehaviorSubject<Integer> onGreenUpdated() {
         return gSubject;
     }
 
-    public static PublishSubject<Integer> writeBlueSubject() {return wBRequestSubject;}
-    public static BehaviorSubject<Integer> bSubject() {return bSubject;}
+    public static PublishSubject<Integer> writeBlueRequest() {return wBRequestSubject;}
+    public static BehaviorSubject<Integer> onBlueUpdated() {return bSubject;}
 
-    public static PublishSubject<Float> writeBrightnessSubject() {return wBrightnessRequestSubject;}
-    public static BehaviorSubject<Float> brightnessSubject() { return brightnessSubject; }
+    public static PublishSubject<Float> writeBrightnessRequest() {return wBrightnessRequestSubject;}
+    public static BehaviorSubject<Float> onBrightnessUpdated() { return brightnessSubject; }
 
-    public static PublishSubject<Boolean> readAllRequestSubject() { return readAllRequestSubject; }
-    public static PublishSubject readAllSubject() { return readAllSubject;}
+    public static PublishSubject<Boolean> readAllRequest() { return readAllRequestSubject; }
+    public static PublishSubject<Boolean> onReadAll() { return readAllSubject;}
 }

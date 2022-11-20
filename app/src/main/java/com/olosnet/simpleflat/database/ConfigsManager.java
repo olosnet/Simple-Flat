@@ -30,11 +30,11 @@ public class ConfigsManager {
     }
 
     private static void setManager() {
-        ConfigsBus.writeRedSubject().subscribe(value -> createConfig(R_KEY, value.toString()));
-        ConfigsBus.writeGreenSubject().subscribe(value -> createConfig(G_KEY, value.toString()));
-        ConfigsBus.writeBlueSubject().subscribe(value -> createConfig(B_KEY, value.toString()));
-        ConfigsBus.writeBrightnessSubject().subscribe(value -> createConfig(BRIGHTNESS_KEY, value.toString()));
-        ConfigsBus.readAllRequestSubject().subscribe(value -> readAll());
+        ConfigsBus.writeRedRequest().subscribe(value -> createConfig(R_KEY, value.toString()));
+        ConfigsBus.writeGreenRequest().subscribe(value -> createConfig(G_KEY, value.toString()));
+        ConfigsBus.writeBlueRequest().subscribe(value -> createConfig(B_KEY, value.toString()));
+        ConfigsBus.writeBrightnessRequest().subscribe(value -> createConfig(BRIGHTNESS_KEY, value.toString()));
+        ConfigsBus.readAllRequest().subscribe(value -> readAll());
     }
 
     private static void createConfig(String key, String value) {
@@ -61,7 +61,7 @@ public class ConfigsManager {
                 for (ConfigsModel element : configs) {
                     nextValue(element);
                 }
-                ConfigsBus.readAllSubject().onNext(true);
+                ConfigsBus.onReadAll().onNext(true);
             });
         });
     }
@@ -71,19 +71,19 @@ public class ConfigsManager {
         switch (model.getCkey()) {
             case R_KEY:
                 Integer CR = Integer.parseInt(model.getValue());
-                ConfigsBus.rSubject().onNext(CR);
+                ConfigsBus.onRedUpdated().onNext(CR);
                 break;
             case G_KEY:
                 Integer CG = Integer.parseInt(model.getValue());
-                ConfigsBus.gSubject().onNext(CG);
+                ConfigsBus.onGreenUpdated().onNext(CG);
                 break;
             case B_KEY:
                 Integer CB = Integer.parseInt(model.getValue());
-                ConfigsBus.bSubject().onNext(CB);
+                ConfigsBus.onBlueUpdated().onNext(CB);
                 break;
             case BRIGHTNESS_KEY:
                 Float CBR = Float.parseFloat(model.getValue());
-                ConfigsBus.brightnessSubject().onNext(CBR);
+                ConfigsBus.onBrightnessUpdated().onNext(CBR);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + model.getCkey());

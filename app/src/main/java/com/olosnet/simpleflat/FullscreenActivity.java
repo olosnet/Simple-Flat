@@ -118,8 +118,8 @@ public class FullscreenActivity extends AppCompatActivity {
         SimpleFlatDatabase database = SimpleFlatDatabase.getInstance(getApplicationContext());
         ProfilesManager.init(database);
         ConfigsManager.init(database);
-        ProfilesBus.loadRequestSubject().onNext(1); // Load existent profiles
-        ConfigsBus.readAllRequestSubject().onNext(true); // Load configs
+        ProfilesBus.loadRequest().onNext(true); // Load existent profiles
+        ConfigsBus.readAllRequest().onNext(true); // Load configs
 
         // Disable screen timeout
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -133,10 +133,10 @@ public class FullscreenActivity extends AppCompatActivity {
         binding.settingFloating.setOnClickListener(mSettingsOnClickListener);
 
         // Bus observables
-        subs.add(ConfigsBus.rSubject().subscribe(this::setR));
-        subs.add(ConfigsBus.gSubject().subscribe(this::setG));
-        subs.add(ConfigsBus.bSubject().subscribe(this::setB));
-        subs.add(ConfigsBus.brightnessSubject().subscribe(this::setBrightness));
+        subs.add(ConfigsBus.onRedUpdated().subscribe(this::setR));
+        subs.add(ConfigsBus.onGreenUpdated().subscribe(this::setG));
+        subs.add(ConfigsBus.onBlueUpdated().subscribe(this::setB));
+        subs.add(ConfigsBus.onBrightnessUpdated().subscribe(this::setBrightness));
 
         if (savedInstanceState != null) {
             int R = savedInstanceState.getInt("currentR", MAX_COLOR);
@@ -145,11 +145,11 @@ public class FullscreenActivity extends AppCompatActivity {
             float brightness = savedInstanceState.getFloat("currentBrightness", DEFAULT_BRIGHTNESS);
 
             // Review
-            ConfigsBus.rSubject().onNext(R);
-            ConfigsBus.gSubject().onNext(G);
-            ConfigsBus.bSubject().onNext(B);
-            ConfigsBus.brightnessSubject().onNext(brightness);
-            ConfigsBus.readAllSubject().onNext(true);
+            ConfigsBus.onRedUpdated().onNext(R);
+            ConfigsBus.onGreenUpdated().onNext(G);
+            ConfigsBus.onBlueUpdated().onNext(B);
+            ConfigsBus.onBrightnessUpdated().onNext(brightness);
+            ConfigsBus.onReadAll().onNext(true);
         }
     }
 

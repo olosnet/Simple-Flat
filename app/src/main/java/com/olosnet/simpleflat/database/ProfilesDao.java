@@ -14,18 +14,18 @@ public interface ProfilesDao {
     public Long createProfileEntry(ProfilesModel entry);
 
     @Update
-    public void updateProfileEntry(ProfilesModel entry);
+    void updateProfileEntry(ProfilesModel entry);
 
     @Delete
-    public void deleteProfileEntry(ProfilesModel entry);
+    void deleteProfileEntry(ProfilesModel entry);
 
     @Query("DELETE FROM profiles WHERE id= :profileID")
-    public void deleteProfileByID(Long profileID);
+    void deleteProfileByID(Long profileID);
 
     @Query("SELECT * FROM profiles WHERE id = :profileID")
-    public ProfilesModel getByID(Long profileID);
+    ProfilesModel getByID(Long profileID);
 
     @Query("SELECT * FROM profiles")
-    public List<ProfilesModel> getAll();
+    List<ProfilesModel> getAll();
 
 }
