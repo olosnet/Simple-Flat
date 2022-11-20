@@ -174,15 +174,17 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showDeleteProfileDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(R.string.are_you_sure)
-                .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-                    ProfilesBus.deleteRequest().onNext(selectedProfile.getId());
-                    dialogInterface.dismiss();
-                })
-                .setNegativeButton(R.string.no, (dialogInterface, i) -> dialogInterface.cancel());
+        if (selectedProfile != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage(R.string.are_you_sure)
+                    .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                        ProfilesBus.deleteRequest().onNext(selectedProfile.getId());
+                        dialogInterface.dismiss();
+                    })
+                    .setNegativeButton(R.string.no, (dialogInterface, i) -> dialogInterface.cancel());
 
-        builder.show();
+            builder.show();
+        }
     }
 
     private void execToast(int resID) {
