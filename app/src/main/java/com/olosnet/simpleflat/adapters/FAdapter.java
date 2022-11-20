@@ -1,4 +1,4 @@
-package com.olosnet.simpleflat.fragments;
+package com.olosnet.simpleflat.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

@@ -19,6 +19,9 @@ public interface ProfilesDao {
     @Delete
     public void deleteProfileEntry(ProfilesModel entry);
 
+    @Query("DELETE FROM profiles WHERE id= :profileID")
+    public void deleteProfileByID(Long profileID);
+
     @Query("SELECT * FROM profiles WHERE id = :profileID")
     public ProfilesModel getByID(Long profileID);
 

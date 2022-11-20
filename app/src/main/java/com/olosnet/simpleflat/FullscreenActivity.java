@@ -4,7 +4,6 @@ package com.olosnet.simpleflat;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,11 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.olosnet.simpleflat.buses.SimpleFlatBus;
-import com.olosnet.simpleflat.database.ConfigsDao;
-import com.olosnet.simpleflat.database.ConfigsModel;
+import com.olosnet.simpleflat.buses.ProfilesBus;
+import com.olosnet.simpleflat.buses.ConfigsBus;
+import com.olosnet.simpleflat.database.ConfigsManager;
 import com.olosnet.simpleflat.database.SimpleFlatDatabase;
 import com.olosnet.simpleflat.databinding.ActivityFullscreenBinding;
+import com.olosnet.simpleflat.database.ProfilesManager;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -47,10 +47,6 @@ public class FullscreenActivity extends AppCompatActivity {
     private View mContentView;
 
     private SimpleFlatDatabase database;
-    private String currentRKey = "CURRENT_R";
-    private String currentGKey = "CURRENT_G";
-    private String currentBKey = "CURRENT_B";
-    private String currentBrightnessKey = "CURRENT_BRIGHTNESS";
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -127,7 +123,13 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // Database
         database = SimpleFlatDatabase.getInstance(getApplicationContext());
+        ProfilesManager.init(database);
+        ConfigsManager.init(database);
+        ProfilesBus.loadRequestSubject().onNext(1); // Load existent profiles
+        ConfigsBus.readAllRequestSubject().onNext(true); // Load configs
 
+        // Disable screen timeout
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
@@ -142,14 +144,11 @@ public class FullscreenActivity extends AppCompatActivity {
         // while interacting with the UI.
         binding.settingFloating.setOnClickListener(mSettingsOnClickListener);
 
-        // Read current config
-        readCurrentConfig();
-
         // Bus observables
-        SimpleFlatBus.rSubject().subscribe(value -> { setR(value); });
-        SimpleFlatBus.gSubject().subscribe(value -> { setG(value); });
-        SimpleFlatBus.bSubject().subscribe(value -> { setB(value); });
-        SimpleFlatBus.brightnessSubject().subscribe(value -> { setBrightness(value); });
+        ConfigsBus.rSubject().subscribe(value -> { setR(value); });
+        ConfigsBus.gSubject().subscribe(value -> { setG(value); });
+        ConfigsBus.bSubject().subscribe(value -> { setB(value); });
+        ConfigsBus.brightnessSubject().subscribe(value -> { setBrightness(value); });
 
         if (savedInstanceState != null) {
             int R = savedInstanceState.getInt("currentR", MAX_COLOR);
@@ -157,15 +156,13 @@ public class FullscreenActivity extends AppCompatActivity {
             int B = savedInstanceState.getInt("currentG", MAX_COLOR);
             float brightness = savedInstanceState.getFloat("currentBrightness", DEFAULT_BRIGHTNESS);
 
-
-            SimpleFlatBus.rSubject().onNext(R);
-            SimpleFlatBus.gSubject().onNext(G);
-            SimpleFlatBus.bSubject().onNext(B);
-            SimpleFlatBus.brightnessSubject().onNext(brightness);
-            SimpleFlatBus.updateSeekSubject().onNext(true);
+            // Review
+            ConfigsBus.rSubject().onNext(R);
+            ConfigsBus.gSubject().onNext(G);
+            ConfigsBus.bSubject().onNext(B);
+            ConfigsBus.brightnessSubject().onNext(brightness);
+            ConfigsBus.readAllSubject().onNext(true);
         }
-
-
     }
 
     @Override
@@ -256,21 +253,18 @@ public class FullscreenActivity extends AppCompatActivity {
         _currentR = value;
         binding.fullscreenContent.setBackgroundColor(
                 Color.argb(255, _currentR, _currentB, _currentG));
-        createUpdateConfig(currentRKey, value.toString());
     }
 
     private void setG(Integer value) {
         _currentG = value;
         binding.fullscreenContent.setBackgroundColor(
                 Color.argb(255, _currentR, _currentB, _currentG));
-        createUpdateConfig(currentGKey, value.toString());
     }
 
     private void setB(Integer value) {
         _currentB = value;
         binding.fullscreenContent.setBackgroundColor(
                 Color.argb(255, _currentR, _currentB, _currentG));
-        createUpdateConfig(currentBKey, value.toString());
     }
 
     private void setBrightness(Float value) {
@@ -279,58 +273,6 @@ public class FullscreenActivity extends AppCompatActivity {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.screenBrightness = value;
         window.setAttributes(lp);
-        createUpdateConfig(currentBrightnessKey, value.toString());
     }
-
-    private void createUpdateConfig(String key, String value) {
-
-        new AsyncTask<Void, Void, Void>() {
-            protected Void doInBackground(Void... voids) {
-
-                ConfigsModel config = new ConfigsModel();
-                config.setCkey(key);
-                config.setValue(value);
-
-                ConfigsDao dao = database.configsDao();
-                dao.createConfigEntry(config);
-
-                return null;
-            }
-        }.execute();
-    }
-
-    private void readCurrentConfig() {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                ConfigsDao dao = database.configsDao();
-
-                Integer RC = MAX_COLOR;
-                Integer GC = MAX_COLOR;
-                Integer BC = MAX_COLOR;
-                Float brightness = DEFAULT_BRIGHTNESS;
-
-                ConfigsModel cr = dao.getByKey(currentRKey);
-                ConfigsModel cg = dao.getByKey(currentGKey);
-                ConfigsModel cb = dao.getByKey(currentBKey);
-                ConfigsModel cbrightness = dao.getByKey(currentBrightnessKey);
-
-                if(cr !=null) { RC = Integer.parseInt(cr.getValue()); }
-                if(cg !=null) { GC = Integer.parseInt(cg.getValue()); }
-                if(cb !=null) { BC = Integer.parseInt(cb.getValue()); }
-                if(cbrightness !=null) { brightness = Float.parseFloat(cbrightness.getValue()); }
-
-                SimpleFlatBus.rSubject().onNext(RC);
-                SimpleFlatBus.gSubject().onNext(GC);
-                SimpleFlatBus.bSubject().onNext(BC);
-                SimpleFlatBus.brightnessSubject().onNext(brightness);
-                SimpleFlatBus.updateSeekSubject().onNext(true);
-
-                return null;
-            }
-        }.execute();
-    }
-
 
 }
