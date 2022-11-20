@@ -1,6 +1,5 @@
 package com.olosnet.simpleflat;
 
-
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -17,12 +16,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.olosnet.simpleflat.buses.ProfilesBus;
 import com.olosnet.simpleflat.buses.ConfigsBus;
+import com.olosnet.simpleflat.buses.ProfilesBus;
 import com.olosnet.simpleflat.database.ConfigsManager;
+import com.olosnet.simpleflat.database.ProfilesManager;
 import com.olosnet.simpleflat.database.SimpleFlatDatabase;
 import com.olosnet.simpleflat.databinding.ActivityFullscreenBinding;
-import com.olosnet.simpleflat.database.ProfilesManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -45,8 +49,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private boolean _settingsFragmentVisibile = false;
     private boolean mVisible;
     private View mContentView;
-
-    private SimpleFlatDatabase database;
+    private final List<Disposable> subs = new ArrayList<>();
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -79,20 +82,10 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
     private ActivityFullscreenBinding binding;
-    private final Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hide();
-        }
-    };
+    private final Runnable mHideRunnable = this::hide;
 
 
-    private final View.OnClickListener mSettingsOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            showSettingsFragment();
-        }
-    };
+    private final View.OnClickListener mSettingsOnClickListener = view -> showSettingsFragment();
 
     private void showSettingsFragment() {
         binding.settingsFragment.setVisibility(View.VISIBLE);
@@ -122,7 +115,7 @@ public class FullscreenActivity extends AppCompatActivity {
         if (actionBar != null) actionBar.hide();
 
         // Database
-        database = SimpleFlatDatabase.getInstance(getApplicationContext());
+        SimpleFlatDatabase database = SimpleFlatDatabase.getInstance(getApplicationContext());
         ProfilesManager.init(database);
         ConfigsManager.init(database);
         ProfilesBus.loadRequestSubject().onNext(1); // Load existent profiles
@@ -132,12 +125,7 @@ public class FullscreenActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
-            }
-        });
+        mContentView.setOnClickListener(view -> toggle());
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
@@ -145,10 +133,10 @@ public class FullscreenActivity extends AppCompatActivity {
         binding.settingFloating.setOnClickListener(mSettingsOnClickListener);
 
         // Bus observables
-        ConfigsBus.rSubject().subscribe(value -> { setR(value); });
-        ConfigsBus.gSubject().subscribe(value -> { setG(value); });
-        ConfigsBus.bSubject().subscribe(value -> { setB(value); });
-        ConfigsBus.brightnessSubject().subscribe(value -> { setBrightness(value); });
+        subs.add(ConfigsBus.rSubject().subscribe(this::setR));
+        subs.add(ConfigsBus.gSubject().subscribe(this::setG));
+        subs.add(ConfigsBus.bSubject().subscribe(this::setB));
+        subs.add(ConfigsBus.brightnessSubject().subscribe(this::setBrightness));
 
         if (savedInstanceState != null) {
             int R = savedInstanceState.getInt("currentR", MAX_COLOR);
@@ -168,7 +156,6 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
@@ -236,7 +223,7 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private void updateMainPadding(@NonNull boolean add) {
+    private void updateMainPadding(boolean add) {
         int paddingBottom = 0;
 
         if (add) {
@@ -275,4 +262,11 @@ public class FullscreenActivity extends AppCompatActivity {
         window.setAttributes(lp);
     }
 
+    @Override
+    protected void onDestroy() {
+        for (Disposable element : subs)
+            element.dispose();
+
+        super.onDestroy();
+    }
 }

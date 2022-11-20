@@ -9,7 +9,13 @@ import androidx.fragment.app.Fragment;
 import com.olosnet.simpleflat.R;
 import com.olosnet.simpleflat.buses.ConfigsBus;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.disposables.Disposable;
+
 public class SettingsFragment extends Fragment {
+    private final List<Disposable> subs = new ArrayList<>();
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -94,17 +100,13 @@ public class SettingsFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        ConfigsBus.rSubject().subscribe(value -> r_value.setText(value.toString()));
+        subs.add(ConfigsBus.rSubject().subscribe(value -> r_value.setText(value.toString())));
+        subs.add(ConfigsBus.gSubject().subscribe(value -> g_value.setText(value.toString())));
+        subs.add(ConfigsBus.bSubject().subscribe(value -> b_value.setText(value.toString())));
+        subs.add(ConfigsBus.brightnessSubject().subscribe(value -> brightness_value.setText(value.toString())));
+        setSeeksProgress(); //First time set
+        subs.add(ConfigsBus.readAllSubject().subscribe(value -> setSeeksProgress()));
 
-        ConfigsBus.gSubject().subscribe(value -> g_value.setText(value.toString()));
-
-        ConfigsBus.bSubject().subscribe(value -> b_value.setText(value.toString()));
-
-        ConfigsBus.brightnessSubject().subscribe(value -> brightness_value.setText(value.toString()));
-
-        setSeeksProgress();
-
-        ConfigsBus.readAllSubject().subscribe(value -> setSeeksProgress());
         return view;
     }
 
@@ -119,4 +121,13 @@ public class SettingsFragment extends Fragment {
         b_seek.setProgress(current_b);
         brightness_seek.setProgress(current_brightness);
     }
+
+    @Override
+    public void onDestroy() {
+        for (Disposable element : subs)
+            element.dispose();
+
+        super.onDestroy();
+    }
+
 }

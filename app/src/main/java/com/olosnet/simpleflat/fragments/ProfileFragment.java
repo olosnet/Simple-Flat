@@ -24,10 +24,14 @@ import com.olosnet.simpleflat.database.ProfilesModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.disposables.Disposable;
+
 public class ProfileFragment extends Fragment {
 
     private List<ProfilesModel> profiles;
     private ProfilesModel selectedProfile;
+    private final List<Disposable> subs = new ArrayList<>();
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -70,19 +74,19 @@ public class ProfileFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
 
-        ProfilesBus.onLoadSubject().subscribe(value -> {
+        subs.add(ProfilesBus.onLoadSubject().subscribe(value -> {
            profiles.clear();
            profiles.addAll(value);
            spinAdapter.notifyDataSetChanged();
-        });
+        }));
 
-        ProfilesBus.onCreateSubject().subscribe(value -> {
+        subs.add(ProfilesBus.onCreateSubject().subscribe(value -> {
             ProfilesBus.loadRequestSubject().onNext(1);
-        });
+        }));
 
-        ProfilesBus.onDeleteSubject().subscribe(value -> {
+        subs.add(ProfilesBus.onDeleteSubject().subscribe(value -> {
             ProfilesBus.loadRequestSubject().onNext(1);
-        });
+        }));
 
         return view;
     }
@@ -122,7 +126,7 @@ public class ProfileFragment extends Fragment {
                     String profileName = input.getText().toString();
 
 
-                    if (profileName == null || profileName.isEmpty()) {
+                    if (profileName.isEmpty()) {
                         Toast.makeText(getContext(),
                                 R.string.profile_name_required, Toast.LENGTH_LONG).show();
                     }
@@ -148,5 +152,11 @@ public class ProfileFragment extends Fragment {
         builder.show();
     }
 
+    @Override
+    public void onDestroy() {
+        for (Disposable element : subs)
+            element.dispose();
 
+        super.onDestroy();
+    }
 }

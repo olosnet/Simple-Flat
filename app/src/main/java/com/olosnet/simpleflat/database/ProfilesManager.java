@@ -25,17 +25,9 @@ public class ProfilesManager {
     }
 
     private static void setManager() {
-        ProfilesBus.createRequestSubject().subscribe(value -> {
-            createProfile(value);
-        });
-
-        ProfilesBus.deleteRequestSubject().subscribe(value -> {
-            deleteProfile(value);
-        });
-
-        ProfilesBus.loadRequestSubject().subscribe(value -> {
-            loadProfiles();
-        });
+        ProfilesBus.createRequestSubject().subscribe(ProfilesManager::createProfile);
+        ProfilesBus.deleteRequestSubject().subscribe(ProfilesManager::deleteProfile);
+        ProfilesBus.loadRequestSubject().subscribe(value -> loadProfiles());
     }
 
     private static void deleteProfile(Long profile_id)
@@ -65,12 +57,7 @@ public class ProfilesManager {
 
         executor.execute(() -> {
             List<ProfilesModel> newProfiles = database.profilesDao().getAll();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    ProfilesBus.onLoadSubject().onNext(newProfiles);
-                }
-            });
+            handler.post(() -> ProfilesBus.onLoadSubject().onNext(newProfiles));
         });
     }
 

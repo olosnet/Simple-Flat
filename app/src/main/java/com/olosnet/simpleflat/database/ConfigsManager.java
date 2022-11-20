@@ -30,11 +30,11 @@ public class ConfigsManager {
     }
 
     private static void setManager() {
-        ConfigsBus.writeRedSubject().subscribe(value -> {createConfig(R_KEY, value.toString());});
-        ConfigsBus.writeGreenSubject().subscribe(value -> {createConfig(G_KEY, value.toString());});
-        ConfigsBus.writeBlueSubject().subscribe(value -> {createConfig(B_KEY, value.toString());});
-        ConfigsBus.writeBrightnessSubject().subscribe(value -> {createConfig(BRIGHTNESS_KEY, value.toString());});
-        ConfigsBus.readAllRequestSubject().subscribe(value -> {readAll();});
+        ConfigsBus.writeRedSubject().subscribe(value -> createConfig(R_KEY, value.toString()));
+        ConfigsBus.writeGreenSubject().subscribe(value -> createConfig(G_KEY, value.toString()));
+        ConfigsBus.writeBlueSubject().subscribe(value -> createConfig(B_KEY, value.toString()));
+        ConfigsBus.writeBrightnessSubject().subscribe(value -> createConfig(BRIGHTNESS_KEY, value.toString()));
+        ConfigsBus.readAllRequestSubject().subscribe(value -> readAll());
     }
 
     private static void createConfig(String key, String value) {
