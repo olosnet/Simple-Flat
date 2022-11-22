@@ -3,7 +3,6 @@ package com.olosnet.simpleflat.fragments;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,9 +108,7 @@ public class ProfileFragment extends Fragment {
             execToast(R.string.profile_deleted);
         }));
 
-        subs.add(ProfilesBus.onSaved().subscribe(value -> {
-            execToast(R.string.profile_saved);
-        }));
+        subs.add(ProfilesBus.onSaved().subscribe(value -> execToast(R.string.profile_saved)));
 
         return view;
     }
@@ -150,14 +147,13 @@ public class ProfileFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.create_profile_title);
 
-        // Input text
-        EditText input = new EditText(builder.getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        input.setPadding(16, 0, 16, 0);
-        builder.setView(input);
+        View viewInflated = LayoutInflater.from(getContext()).inflate
+                (R.layout.profile_create_dialog, (ViewGroup) getView(), false);
 
-        builder.setMessage(R.string.insert_profile_name)
-                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+        final EditText input = (EditText) viewInflated.findViewById(R.id.profileNameEdit);
+        builder.setView(viewInflated);
+
+        builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                     String profileName = input.getText().toString();
 
 
