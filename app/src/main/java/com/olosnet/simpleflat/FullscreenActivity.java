@@ -239,19 +239,19 @@ public class FullscreenActivity extends AppCompatActivity {
     private void setR(Integer value) {
         _currentR = value;
         binding.fullscreenContent.setBackgroundColor(
-                Color.argb(255, _currentR, _currentB, _currentG));
+                Color.argb(255, _currentR, _currentG, _currentB));
     }
 
     private void setG(Integer value) {
         _currentG = value;
         binding.fullscreenContent.setBackgroundColor(
-                Color.argb(255, _currentR, _currentB, _currentG));
+                Color.argb(255, _currentR, _currentG, _currentB));
     }
 
     private void setB(Integer value) {
         _currentB = value;
         binding.fullscreenContent.setBackgroundColor(
-                Color.argb(255, _currentR, _currentB, _currentG));
+                Color.argb(255, _currentR, _currentG, _currentB));
     }
 
     private void setBrightness(Float value) {
