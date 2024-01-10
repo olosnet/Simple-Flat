@@ -25,6 +25,7 @@ import com.olosnet.simpleflat.databinding.ActivityFullscreenBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -45,7 +46,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private static int _currentR;
     private static int _currentG;
     private static int _currentB;
-    private final Handler mHideHandler = new Handler(Looper.myLooper());
+    private final Handler mHideHandler = new Handler(Objects.requireNonNull(Looper.myLooper()));
     private boolean _settingsFragmentVisibile = false;
     private boolean mVisible;
     private View mContentView;
@@ -58,7 +59,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
             // Delayed removal of status and navigation bar
             if (Build.VERSION.SDK_INT >= 30) {
-                mContentView.getWindowInsetsController().hide(
+                Objects.requireNonNull(mContentView.getWindowInsetsController()).hide(
                         WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
             } else {
                 // Note that some of these constants are new as of API 16 (Jelly Bean)
@@ -141,7 +142,7 @@ public class FullscreenActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             int R = savedInstanceState.getInt("currentR", MAX_COLOR);
             int G = savedInstanceState.getInt("currentG", MAX_COLOR);
-            int B = savedInstanceState.getInt("currentG", MAX_COLOR);
+            int B = savedInstanceState.getInt("currentB", MAX_COLOR);
             float brightness = savedInstanceState.getFloat("currentBrightness", DEFAULT_BRIGHTNESS);
 
             // Review
@@ -189,7 +190,7 @@ public class FullscreenActivity extends AppCompatActivity {
         // Show the system bar
         if (Build.VERSION.SDK_INT >= 30) {
 
-            mContentView.getWindowInsetsController().show(
+            Objects.requireNonNull(mContentView.getWindowInsetsController()).show(
                     WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
         } else {
             mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
