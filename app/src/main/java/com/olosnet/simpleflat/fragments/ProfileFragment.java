@@ -129,6 +129,7 @@ public class ProfileFragment extends Fragment {
             ConfigsBus.writeBlueRequest().onNext(selectedProfile.getB_value());
             ConfigsBus.writeBrightnessRequest().onNext(selectedProfile.getBrightness_value());
         }
+
     }
 
     private void createNewProfileOnCurrentData(String profileName) {
