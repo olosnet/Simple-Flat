@@ -33,4 +33,7 @@
     <string name="profile_loaded">Profile loaded</string>
     <string name="profile_deleted">Profile deleted</string>
     <string name="profile_name_required">Profile name required!</string>
+    <string name="profile_export_failed">Profile export failed!</string>
+    <string name="profile_export_success">Success, file:</string>
+
 </resources>

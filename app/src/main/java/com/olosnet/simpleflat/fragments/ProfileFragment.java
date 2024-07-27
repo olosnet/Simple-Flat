@@ -1,7 +1,9 @@
 package com.olosnet.simpleflat.fragments;
 
+
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +15,22 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.olosnet.simpleflat.R;
 import com.olosnet.simpleflat.adapters.ProfileSpinAdapter;
 import com.olosnet.simpleflat.buses.ConfigsBus;
 import com.olosnet.simpleflat.buses.ProfilesBus;
+import com.olosnet.simpleflat.common.ProfilesExclusionStrategy;
 import com.olosnet.simpleflat.database.ProfilesModel;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -62,6 +71,9 @@ public class ProfileFragment extends Fragment {
 
         Button load_button = view.findViewById(R.id.loadButton);
         load_button.setOnClickListener(l -> loadSelectedProfile());
+
+        Button export_button = view.findViewById(R.id.exportButton);
+        export_button.setOnClickListener(l -> exportProfiles());
 
         // Spinner
         profiles = new ArrayList<>();
@@ -194,5 +206,45 @@ public class ProfileFragment extends Fragment {
             element.dispose();
 
         super.onDestroy();
+    }
+
+    private void exportProfiles() {
+        String rootOut = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+        File outDirectory = new File(rootOut, "SimpleFlat");
+        boolean can_proceed = true;
+
+        if (!outDirectory.exists()) {
+            can_proceed = outDirectory.mkdirs();
+        }
+
+        if (can_proceed) {
+
+            // Convert profiles to JSON
+            Gson gson = new GsonBuilder().setExclusionStrategies(new ProfilesExclusionStrategy()).create();
+            String json = gson.toJson(profiles);
+
+            // Export JSON
+            long current_time = new Date().getTime();
+            String filename = String.format(Locale.getDefault(), "profiles_exported_%d.json", current_time);
+
+            File outFilePath = new File(outDirectory, filename);
+
+            try {
+                FileWriter out = new FileWriter(outFilePath);
+                out.write(json);
+                out.close();
+            } catch (IOException e) {
+                can_proceed = false;
+            }
+
+            if (can_proceed) {
+                String message = String.format(Locale.getDefault(), "%s %s", getString(R.string.profile_export_success), outFilePath.toString());
+                Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (!can_proceed) {
+           execToast(R.string.profile_export_failed);
+        }
     }
 }
