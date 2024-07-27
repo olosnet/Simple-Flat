@@ -21,6 +21,7 @@ import com.olosnet.simpleflat.database.ProfilesModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -64,7 +65,7 @@ public class ProfileFragment extends Fragment {
 
         // Spinner
         profiles = new ArrayList<>();
-        ProfileSpinAdapter spinAdapter = new ProfileSpinAdapter(getContext(),
+        ProfileSpinAdapter spinAdapter = new ProfileSpinAdapter(requireContext(),
                 android.R.layout.simple_spinner_item,
                 profiles);
         spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
