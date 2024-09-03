@@ -1,6 +1,8 @@
 package com.olosnet.simpleflat.database;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 
 @Entity(tableName = "profiles")
 public class ProfilesModel {
@@ -14,9 +16,13 @@ public class ProfilesModel {
     private int b_value;
     private float brightness_value;
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -58,3 +64,4 @@ public class ProfilesModel {
         this.brightness_value = brightness_value;
     }
 }
+

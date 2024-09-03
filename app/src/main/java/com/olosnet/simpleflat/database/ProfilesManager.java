@@ -15,7 +15,7 @@ public class ProfilesManager {
     private static SimpleFlatDatabase database;
 
     public static ProfilesManager init(SimpleFlatDatabase database) {
-        if(ProfilesManager.manager == null) {
+        if (ProfilesManager.manager == null) {
             ProfilesManager.manager = new ProfilesManager();
             ProfilesManager.database = database;
             setManager();
@@ -29,10 +29,10 @@ public class ProfilesManager {
         ProfilesBus.deleteRequest().subscribe(ProfilesManager::deleteProfile);
         ProfilesBus.loadRequest().subscribe(value -> loadProfiles());
         ProfilesBus.saveRequest().subscribe(ProfilesManager::saveProfile);
+        ProfilesBus.importRequest().subscribe(ProfilesManager::importProfiles);
     }
 
-    private static void deleteProfile(Long profile_id)
-    {
+    private static void deleteProfile(Long profile_id) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -69,6 +69,24 @@ public class ProfilesManager {
         executor.execute(() -> {
             database.profilesDao().updateProfileEntry(model);
             handler.post(() -> ProfilesBus.onSaved().onNext(model));
+        });
+    }
+
+    private static void importProfiles(ImportProfilesType iprofiles) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            if (iprofiles.remove_old)
+                database.profilesDao().deleteAllProfiles();
+
+            // Workaround, find different solution
+            for (ProfilesModel model : iprofiles.models) {
+                model.setId(null);
+                database.profilesDao().createProfileEntry(model);
+            }
+
+            handler.post(() -> ProfilesBus.onImported().onNext(iprofiles));
         });
     }
 }

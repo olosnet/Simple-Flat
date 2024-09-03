@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
 import java.util.List;
 
 @Dao
@@ -22,10 +23,14 @@ public interface ProfilesDao {
     @Query("DELETE FROM profiles WHERE id= :profileID")
     void deleteProfileByID(Long profileID);
 
+    @Query("DELETE FROM profiles")
+    void deleteAllProfiles();
+
     @Query("SELECT * FROM profiles WHERE id = :profileID")
     ProfilesModel getByID(Long profileID);
 
     @Query("SELECT * FROM profiles")
     List<ProfilesModel> getAll();
+
 
 }
