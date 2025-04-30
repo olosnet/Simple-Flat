@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_button">Impostazioni</string>
+    <string name="rgbv_r_label">Intensità R</string>
+    <string name="rgbv_g_label">Intensità G</string>
+    <string name="rgbv_b_label">Intensità B</string>
+    <string name="brightnessv_label">Luminosità</string>
+    <string name="tab_settings">Impostazioni</string>
+    <string name="tab_profiles">Profili</string>
+    <string name="button_new">Nuovo</string>
+    <string name="button_save">Salva</string>
+    <string name="button_load">Carica</string>
+    <string name="button_delete">Elimina</string>
+    <string name="button_export">Esporta profili</string>
+    <string name="button_import">Importa profili</string>
+    <string name="are_you_sure">Sei sicuro?</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Annulla</string>
+    <string name="simport">Importa</string>
+    <string name="create_profile_title">Nuovo Profilo</string>
+    <string name="insert_profile_name">Inserisci nome del profilo</string>
+    <string name="profiles_files">File di profilo</string>
+    <string name="profile_created">Profilo creato</string>
+    <string name="profile_saved">Profilo salvato</string>
+    <string name="profile_loaded">Profilo caricato</string>
+    <string name="profile_deleted">Profilo eliminato</string>
+    <string name="profile_name_required">Nome del profilo richiesto!</string>
+    <string name="profile_export_failed">Esportazione fallita!</string>
+    <string name="profile_export_success">Successo, file:</string>
+    <string name="select_filename_please">Per favore seleziona un file da importare!</string>
+    <string name="delete_old_profile_request">Elimino i vecchi profili?</string>
+    <string name="profile_import_failed">Import del profilo fallito!</string>
+    <string name="profile_import_failed_empty">Non posso importare un file con zero profili!</string>
+    <string name="import_successful">Importazione avvenuta con successo!</string>
+</resources>

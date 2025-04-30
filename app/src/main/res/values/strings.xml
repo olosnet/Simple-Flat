@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Simple Flat</string>
+    <string name="app_name" translatable="false">Simple Flat</string>
     <string name="setting_button">Settings</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings" translatable="false">SettingsActivity</string>
 
     <string name="rgbv_r_label">R Value</string>
     <string name="rgbv_g_label">G Value</string>

@@ -40,8 +40,8 @@ public class ShowSettingsFragment extends Fragment {
         FAdapter adapter = new FAdapter(getActivity());
         ProfileFragment profileFragment = new ProfileFragment();
         SettingsFragment settingsFragment = new SettingsFragment();
-        adapter.addFragment(settingsFragment, "Settings");
-        adapter.addFragment(profileFragment, "Profiles");
+        adapter.addFragment(settingsFragment, getString(R.string.tab_settings));
+        adapter.addFragment(profileFragment, getString(R.string.tab_profiles));
 
         pager.setAdapter(adapter);
         pager.setCurrentItem(0);
