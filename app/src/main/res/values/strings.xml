@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Simple Flat</string>
     <string name="setting_button">Settings</string>
-    <string name="title_activity_settings" translatable="false">SettingsActivity</string>
 
     <string name="rgbv_r_label">R Value</string>
     <string name="rgbv_g_label">G Value</string>
@@ -21,7 +20,7 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="simport">Import</string>
 
@@ -31,7 +30,6 @@
 
     <string name="profile_created">Profile created</string>
     <string name="profile_saved">Profile saved</string>
-    <string name="profile_loaded">Profile loaded</string>
     <string name="profile_deleted">Profile deleted</string>
     <string name="profile_name_required">Profile name required!</string>
     <string name="profile_export_failed">Profile export failed!</string>

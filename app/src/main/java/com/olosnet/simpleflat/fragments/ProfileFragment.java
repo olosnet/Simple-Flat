@@ -206,7 +206,7 @@ public class ProfileFragment extends Fragment {
         }).setNegativeButton(R.string.cancel, ((dialogInterface, i) -> dialogInterface.cancel()));
 
 
-        File[] files = profilesDirectory.listFiles((dir, name) -> name.toLowerCase().endsWith(".json"));
+        File[] files = profilesDirectory.listFiles((dir, name) -> name.toLowerCase(Locale.ROOT).endsWith(".json"));
         String[] fstring = new String[Objects.requireNonNull(files).length];
         for (int i = 0; i < files.length; i++) {
             fstring[i] = files[i].getName();

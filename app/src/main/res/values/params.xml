@@ -1,7 +1,4 @@
 <resources>
     <dimen name="settings_widget_margin_top">16dp</dimen>
     <dimen name="settings_widget_margin_start">16dp</dimen>
-    <integer name="min_brightness">0</integer>
-    <integer name="max_brightness">1</integer>
-    <integer name="max_color">255</integer>
 </resources>

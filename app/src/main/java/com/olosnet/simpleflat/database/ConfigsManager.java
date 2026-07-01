@@ -5,14 +5,18 @@ import android.os.Looper;
 
 import com.olosnet.simpleflat.buses.ConfigsBus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ConfigsManager {
 
     private static ConfigsManager manager;
     private static SimpleFlatDatabase database;
+    private static final List<Disposable> subs = new ArrayList<>();
 
     public static final String R_KEY = "CURRENT_R";
     public static final String G_KEY = "CURRENT_G";
@@ -30,11 +34,11 @@ public class ConfigsManager {
     }
 
     private static void setManager() {
-        ConfigsBus.writeRedRequest().subscribe(value -> createConfig(R_KEY, value.toString()));
-        ConfigsBus.writeGreenRequest().subscribe(value -> createConfig(G_KEY, value.toString()));
-        ConfigsBus.writeBlueRequest().subscribe(value -> createConfig(B_KEY, value.toString()));
-        ConfigsBus.writeBrightnessRequest().subscribe(value -> createConfig(BRIGHTNESS_KEY, value.toString()));
-        ConfigsBus.readAllRequest().subscribe(value -> readAll());
+        subs.add(ConfigsBus.writeRedRequest().subscribe(value -> createConfig(R_KEY, value.toString())));
+        subs.add(ConfigsBus.writeGreenRequest().subscribe(value -> createConfig(G_KEY, value.toString())));
+        subs.add(ConfigsBus.writeBlueRequest().subscribe(value -> createConfig(B_KEY, value.toString())));
+        subs.add(ConfigsBus.writeBrightnessRequest().subscribe(value -> createConfig(BRIGHTNESS_KEY, value.toString())));
+        subs.add(ConfigsBus.readAllRequest().subscribe(value -> readAll()));
     }
 
     private static void createConfig(String key, String value) {

@@ -5,14 +5,18 @@ import android.os.Looper;
 
 import com.olosnet.simpleflat.buses.ProfilesBus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ProfilesManager {
 
     private static ProfilesManager manager;
     private static SimpleFlatDatabase database;
+    private static final List<Disposable> subs = new ArrayList<>();
 
     public static ProfilesManager init(SimpleFlatDatabase database) {
         if (ProfilesManager.manager == null) {
@@ -25,11 +29,11 @@ public class ProfilesManager {
     }
 
     private static void setManager() {
-        ProfilesBus.createRequest().subscribe(ProfilesManager::createProfile);
-        ProfilesBus.deleteRequest().subscribe(ProfilesManager::deleteProfile);
-        ProfilesBus.loadRequest().subscribe(value -> loadProfiles());
-        ProfilesBus.saveRequest().subscribe(ProfilesManager::saveProfile);
-        ProfilesBus.importRequest().subscribe(ProfilesManager::importProfiles);
+        subs.add(ProfilesBus.createRequest().subscribe(ProfilesManager::createProfile));
+        subs.add(ProfilesBus.deleteRequest().subscribe(ProfilesManager::deleteProfile));
+        subs.add(ProfilesBus.loadRequest().subscribe(value -> loadProfiles()));
+        subs.add(ProfilesBus.saveRequest().subscribe(ProfilesManager::saveProfile));
+        subs.add(ProfilesBus.importRequest().subscribe(ProfilesManager::importProfiles));
     }
 
     private static void deleteProfile(Long profile_id) {

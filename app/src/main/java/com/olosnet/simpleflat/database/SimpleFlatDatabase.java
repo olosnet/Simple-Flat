@@ -10,7 +10,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(
         entities = {ConfigsModel.class, ProfilesModel.class},
-        version = 2
+        version = 2,
+        exportSchema = false
 )
 public abstract class SimpleFlatDatabase extends RoomDatabase {
 

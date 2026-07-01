@@ -16,7 +16,7 @@
     <string name="are_you_sure">Sei sicuro?</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Annulla</string>
     <string name="simport">Importa</string>
     <string name="create_profile_title">Nuovo Profilo</string>
@@ -24,7 +24,6 @@
     <string name="profiles_files">File di profilo</string>
     <string name="profile_created">Profilo creato</string>
     <string name="profile_saved">Profilo salvato</string>
-    <string name="profile_loaded">Profilo caricato</string>
     <string name="profile_deleted">Profilo eliminato</string>
     <string name="profile_name_required">Nome del profilo richiesto!</string>
     <string name="profile_export_failed">Esportazione fallita!</string>

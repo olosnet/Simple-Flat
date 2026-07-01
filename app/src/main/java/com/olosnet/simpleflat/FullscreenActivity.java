@@ -1,7 +1,5 @@
 package com.olosnet.simpleflat;
 
-import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +13,8 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.olosnet.simpleflat.buses.ConfigsBus;
 import com.olosnet.simpleflat.buses.ProfilesBus;
@@ -53,7 +53,6 @@ public class FullscreenActivity extends AppCompatActivity {
     private final List<Disposable> subs = new ArrayList<>();
 
     private final Runnable mHidePart2Runnable = new Runnable() {
-        @SuppressLint("InlinedApi")
         @Override
         public void run() {
 
@@ -225,16 +224,15 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     private void updateMainPadding(boolean add) {
-        int paddingBottom = 0;
-
         if (add) {
-            Resources resources = getResources();
-            int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                paddingBottom = resources.getDimensionPixelSize(resourceId);
+            WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(binding.fullScreenLayout);
+            if (insets != null) {
+                binding.fullScreenLayout.setPadding(
+                        0, 0, 0, insets.getSystemWindowInsetBottom());
             }
+        } else {
+            binding.fullScreenLayout.setPadding(0, 0, 0, 0);
         }
-        binding.fullScreenLayout.setPadding(0, 0, 0, paddingBottom);
     }
 
     private void setR(Integer value) {

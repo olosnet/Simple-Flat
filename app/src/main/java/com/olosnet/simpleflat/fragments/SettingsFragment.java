@@ -100,10 +100,10 @@ public class SettingsFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        subs.add(ConfigsBus.onRedUpdated().subscribe(value -> r_value.setText(value.toString())));
-        subs.add(ConfigsBus.onGreenUpdated().subscribe(value -> g_value.setText(value.toString())));
-        subs.add(ConfigsBus.onBlueUpdated().subscribe(value -> b_value.setText(value.toString())));
-        subs.add(ConfigsBus.onBrightnessUpdated().subscribe(value -> brightness_value.setText(value.toString())));
+        subs.add(ConfigsBus.onRedUpdated().subscribe(value -> r_value.setText(String.valueOf(value))));
+        subs.add(ConfigsBus.onGreenUpdated().subscribe(value -> g_value.setText(String.valueOf(value))));
+        subs.add(ConfigsBus.onBlueUpdated().subscribe(value -> b_value.setText(String.valueOf(value))));
+        subs.add(ConfigsBus.onBrightnessUpdated().subscribe(value -> brightness_value.setText(String.valueOf(value))));
 
         setSeeksProgress(); //First time set
         subs.add(ConfigsBus.onReadAll().subscribe(value -> setSeeksProgress()));
