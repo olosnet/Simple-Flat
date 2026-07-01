@@ -15,6 +15,7 @@
         tools:targetApi="35">
         <activity
             android:name=".FullscreenActivity"
+            android:icon="@mipmap/ic_launcher"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
