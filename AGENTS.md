@@ -2,6 +2,10 @@
 
 Android app: fullscreen solid color + brightness. Generate flat frames for astrophotography calibration.
 
+## Agent rules
+
+Always use the caveman skill unless otherwise indicated
+
 ## Build & run
 
 ```bash
