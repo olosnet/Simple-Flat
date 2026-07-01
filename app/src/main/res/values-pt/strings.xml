@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_button">Configurações</string>
+    <string name="rgbv_r_label">Valor R</string>
+    <string name="rgbv_g_label">Valor G</string>
+    <string name="rgbv_b_label">Valor B</string>
+    <string name="brightnessv_label">Brilho</string>
+    <string name="tab_settings">Configurações</string>
+    <string name="tab_profiles">Perfis</string>
+    <string name="button_new">Novo</string>
+    <string name="button_save">Salvar</string>
+    <string name="button_load">Carregar</string>
+    <string name="button_delete">Excluir</string>
+    <string name="button_export">Exportar perfis</string>
+    <string name="button_import">Importar perfis</string>
+    <string name="are_you_sure">Tem certeza?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="simport">Importar</string>
+    <string name="create_profile_title">Novo perfil</string>
+    <string name="insert_profile_name">Insira o nome do perfil</string>
+    <string name="profiles_files">Arquivos de perfil</string>
+    <string name="profile_created">Perfil criado</string>
+    <string name="profile_saved">Perfil salvo</string>
+    <string name="profile_deleted">Perfil excluído</string>
+    <string name="profile_name_required">Nome do perfil obrigatório!</string>
+    <string name="profile_export_failed">Falha na exportação!</string>
+    <string name="profile_export_success">Sucesso, arquivo:</string>
+    <string name="select_filename_please">Por favor, selecione um arquivo para importar!</string>
+    <string name="delete_old_profile_request">Excluir perfis antigos?</string>
+    <string name="profile_import_failed">Falha na importação do perfil!</string>
+    <string name="profile_import_failed_empty">Não é possível importar um arquivo sem perfis!</string>
+    <string name="import_successful">Importação bem-sucedida!</string>
+</resources>

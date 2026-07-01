@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_button">Paramètres</string>
+    <string name="rgbv_r_label">Valeur R</string>
+    <string name="rgbv_g_label">Valeur G</string>
+    <string name="rgbv_b_label">Valeur B</string>
+    <string name="brightnessv_label">Luminosité</string>
+    <string name="tab_settings">Paramètres</string>
+    <string name="tab_profiles">Profils</string>
+    <string name="button_new">Nouveau</string>
+    <string name="button_save">Enregistrer</string>
+    <string name="button_load">Charger</string>
+    <string name="button_delete">Supprimer</string>
+    <string name="button_export">Exporter les profils</string>
+    <string name="button_import">Importer les profils</string>
+    <string name="are_you_sure">Êtes-vous sûr ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Annuler</string>
+    <string name="simport">Importer</string>
+    <string name="create_profile_title">Nouveau profil</string>
+    <string name="insert_profile_name">Saisir le nom du profil</string>
+    <string name="profiles_files">Fichiers de profils</string>
+    <string name="profile_created">Profil créé</string>
+    <string name="profile_saved">Profil enregistré</string>
+    <string name="profile_deleted">Profil supprimé</string>
+    <string name="profile_name_required">Nom du profil requis !</string>
+    <string name="profile_export_failed">Échec de l\'exportation !</string>
+    <string name="profile_export_success">Succès, fichier :</string>
+    <string name="select_filename_please">Veuillez sélectionner un fichier à importer !</string>
+    <string name="delete_old_profile_request">Supprimer les anciens profils ?</string>
+    <string name="profile_import_failed">Échec de l\'importation !</string>
+    <string name="profile_import_failed_empty">Impossible d\'importer un fichier sans profils !</string>
+    <string name="import_successful">Importation réussie !</string>
+</resources>

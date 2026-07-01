@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_button">Instellingen</string>
+    <string name="rgbv_r_label">R-waarde</string>
+    <string name="rgbv_g_label">G-waarde</string>
+    <string name="rgbv_b_label">B-waarde</string>
+    <string name="brightnessv_label">Helderheid</string>
+    <string name="tab_settings">Instellingen</string>
+    <string name="tab_profiles">Profielen</string>
+    <string name="button_new">Nieuw</string>
+    <string name="button_save">Opslaan</string>
+    <string name="button_load">Laden</string>
+    <string name="button_delete">Verwijderen</string>
+    <string name="button_export">Profielen exporteren</string>
+    <string name="button_import">Profielen importeren</string>
+    <string name="are_you_sure">Weet u het zeker?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Annuleren</string>
+    <string name="simport">Importeren</string>
+    <string name="create_profile_title">Nieuw profiel</string>
+    <string name="insert_profile_name">Voer profielnaam in</string>
+    <string name="profiles_files">Profielbestanden</string>
+    <string name="profile_created">Profiel aangemaakt</string>
+    <string name="profile_saved">Profiel opgeslagen</string>
+    <string name="profile_deleted">Profiel verwijderd</string>
+    <string name="profile_name_required">Profielnaam vereist!</string>
+    <string name="profile_export_failed">Exporteren mislukt!</string>
+    <string name="profile_export_success">Gelukt, bestand:</string>
+    <string name="select_filename_please">Selecteer een bestand om te importeren!</string>
+    <string name="delete_old_profile_request">Oude profielen verwijderen?</string>
+    <string name="profile_import_failed">Importeren mislukt!</string>
+    <string name="profile_import_failed_empty">Kan geen bestand met nul profielen importeren!</string>
+    <string name="import_successful">Importeren gelukt!</string>
+</resources>

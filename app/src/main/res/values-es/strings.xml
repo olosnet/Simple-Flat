@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_button">Ajustes</string>
+    <string name="rgbv_r_label">Valor R</string>
+    <string name="rgbv_g_label">Valor G</string>
+    <string name="rgbv_b_label">Valor B</string>
+    <string name="brightnessv_label">Brillo</string>
+    <string name="tab_settings">Ajustes</string>
+    <string name="tab_profiles">Perfiles</string>
+    <string name="button_new">Nuevo</string>
+    <string name="button_save">Guardar</string>
+    <string name="button_load">Cargar</string>
+    <string name="button_delete">Eliminar</string>
+    <string name="button_export">Exportar perfiles</string>
+    <string name="button_import">Importar perfiles</string>
+    <string name="are_you_sure">¿Estás seguro?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="simport">Importar</string>
+    <string name="create_profile_title">Nuevo perfil</string>
+    <string name="insert_profile_name">Introduce el nombre del perfil</string>
+    <string name="profiles_files">Archivos de perfil</string>
+    <string name="profile_created">Perfil creado</string>
+    <string name="profile_saved">Perfil guardado</string>
+    <string name="profile_deleted">Perfil eliminado</string>
+    <string name="profile_name_required">¡Nombre del perfil requerido!</string>
+    <string name="profile_export_failed">¡Error al exportar!</string>
+    <string name="profile_export_success">Éxito, archivo:</string>
+    <string name="select_filename_please">¡Por favor selecciona un archivo para importar!</string>
+    <string name="delete_old_profile_request">¿Eliminar perfiles antiguos?</string>
+    <string name="profile_import_failed">¡Error al importar perfil!</string>
+    <string name="profile_import_failed_empty">¡No puedo importar un archivo sin perfiles!</string>
+    <string name="import_successful">¡Importación exitosa!</string>
+</resources>
